@@ -1,0 +1,6 @@
+rootProject.name = 'spring-business-wrapper'
+
+include 'core'
+include 'jwt'
+include 'direct'
+include 'oauth'
