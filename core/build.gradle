@@ -5,6 +5,7 @@ dependencies {
 
     compile "javax.servlet:javax.servlet-api:$javax_servlet_version"
     compile "org.springframework.boot:spring-boot-starter-security:$spring_boot_version"
+    compile "org.springframework.boot:spring-boot-starter-data-redis:$spring_boot_version"
 
     //기타 필수
     compile "org.jasypt:jasypt:$jasypt_version"

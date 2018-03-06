@@ -7,6 +7,10 @@ import javax.servlet.ServletRequest
 import javax.servlet.ServletResponse
 import javax.servlet.http.HttpServletRequest
 
+/**
+ * @author chaeeung.e
+ * @since 2017-08-30
+ */
 class NonceCheckFilter : Filter {
 
     lateinit var nonceCheckService: NonceCheckService
