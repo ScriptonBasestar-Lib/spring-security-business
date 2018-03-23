@@ -3,7 +3,6 @@ package kr.scripton.business.direct.auth
 import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.*
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider
-import org.springframework.security.authentication.dao.SaltSource
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.AuthenticationException
 import org.springframework.security.core.userdetails.UserDetails
@@ -50,23 +49,24 @@ class DirectUsernamePasswordAuthenticationProvider : DaoAuthenticationProvider {
 	override fun additionalAuthenticationChecks(userDetails: UserDetails,
 												authentication: UsernamePasswordAuthenticationToken) {
 
+		TODO()
 		// super.additionalAuthenticationChecks(userDetails, authentication);
 
-		val signedToken = authentication as DirectUsernamePasswordAuthenticationToken
-
-		if (signedToken.requestSignature == null) {
-			throw BadCredentialsException(messages.getMessage(
-					"SignedUsernamePasswordAuthenticationProvider.missingSignature", "Missing request signature"))// ,
-			// isIncludeDetailsObject() ? userDetails : null);
-		}
-
-		// calculate expected signature
-		if (!signedToken.requestSignature.equals(
-				calculateExpectedSignature(signedToken))) {
-			throw BadCredentialsException(messages.getMessage(
-					"SignedUsernamePasswordAuthenticationProvider.badSignature", "Invalid request signature"))// ,
-			// isIncludeDetailsObject() ? userDetails : null);
-		}
+//		val signedToken = authentication as DirectUsernamePasswordAuthenticationToken
+//
+//		if (signedToken.requestSignature == null) {
+//			throw BadCredentialsException(messages.getMessage(
+//					"SignedUsernamePasswordAuthenticationProvider.missingSignature", "Missing request signature"))// ,
+//			// isIncludeDetailsObject() ? userDetails : null);
+//		}
+//
+//		// calculate expected signature
+//		if (!signedToken.requestSignature.equals(
+//				calculateExpectedSignature(signedToken))) {
+//			throw BadCredentialsException(messages.getMessage(
+//					"SignedUsernamePasswordAuthenticationProvider.badSignature", "Invalid request signature"))// ,
+//			// isIncludeDetailsObject() ? userDetails : null);
+//		}
 	}
 
 	/**
@@ -161,15 +161,15 @@ class DirectUsernamePasswordAuthenticationProvider : DaoAuthenticationProvider {
 				principalToReturn, authentication, user)
 	}
 
-	override fun setPasswordEncoder(passwordEncoder: Any) {
-
-		super.setPasswordEncoder(passwordEncoder)
-	}
-
-	override fun setSaltSource(saltSource: SaltSource) {
-
-		super.setSaltSource(saltSource)
-	}
+//	override fun setPasswordEncoder(passwordEncoder: Any) {
+//
+//		super.setPasswordEncoder(passwordEncoder)
+//	}
+//
+//	override fun setSaltSource(saltSource: SaltSource) {
+//
+//		super.setSaltSource(saltSource)
+//	}
 
 	override fun setUserDetailsService(userDetailsService: UserDetailsService) {
 

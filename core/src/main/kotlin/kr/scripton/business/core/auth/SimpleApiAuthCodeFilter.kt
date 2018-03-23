@@ -21,9 +21,9 @@ class SimpleApiAuthCodeFilter : OncePerRequestFilter() {
 
 	@Throws(ServletException::class)
 	override fun initFilterBean() {
-		serverAuthKey = filterConfig.getInitParameter("config.server.auth-key").trim { it <= ' ' } + " "
+		serverAuthKey = filterConfig!!.getInitParameter("config.server.auth-key").trim { it <= ' ' } + " "
 		serverAuthKeyLength = serverAuthKey!!.length
-		serverAuthCode = filterConfig.getInitParameter("config.server.auth-code").trim { it <= ' ' }
+		serverAuthCode = filterConfig!!.getInitParameter("config.server.auth-code").trim { it <= ' ' }
 	}
 
 	@Throws(ServletException::class, IOException::class)

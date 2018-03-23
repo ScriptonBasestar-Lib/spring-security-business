@@ -5,5 +5,5 @@ package kr.scripton.business.core.auth
  * @since 2018-02-08 오후 6:07
  */
 interface NonceCheckService {
-    fun isDuplicate(nonce:String):Boolean
+	fun isDuplicate(nonce: String): Boolean
 }

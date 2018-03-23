@@ -4,7 +4,8 @@ import kr.scripton.business.core.SSBConstant
 import kr.scripton.business.jwt.auth.JwtAuthenticationManager
 import kr.scripton.business.jwt.auth.JwtPreAuthenticationToken
 import kr.scripton.business.jwt.auth.JwtUser
-import org.scriptonbasestar.tool.core.exception.compiletime.SBTextExtractException
+import kr.scripton.business.jwt.custom.JwtSsoHandler
+import kr.scripton.business.jwt.exception.ExtractTextException
 import org.springframework.security.authentication.InternalAuthenticationServiceException
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.AuthenticationException
@@ -25,13 +26,14 @@ import javax.servlet.http.HttpServletResponse
  */
 abstract class JwtAbstractFilter<USER_ID, JWT_USER : JwtUser<USER_ID>> : OncePerRequestFilter() {
 
-	lateinit var  authenticationManager: JwtAuthenticationManager<USER_ID, JWT_USER>
+	lateinit var authenticationManager: JwtAuthenticationManager<USER_ID, JWT_USER>
 
 	//not null
 	lateinit var serviceName: String
 	//not null
 	lateinit var signingKey: String
 
+	abstract var jwtSsoHandler: JwtSsoHandler?
 	var successHandler: AuthenticationSuccessHandler? = null
 	var failureHandler: AuthenticationFailureHandler? = null
 
@@ -50,10 +52,10 @@ abstract class JwtAbstractFilter<USER_ID, JWT_USER : JwtUser<USER_ID>> : OncePer
 
 	@Throws(ServletException::class, IOException::class)
 	override fun doFilterInternal(request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain) {
-		var token: String? = null
+		val token: String?
 		try {
 			token = extractTokenString(request, response)
-		} catch (e: SBTextExtractException) {
+		} catch (e: ExtractTextException) {
 			//			e.printStackTrace();
 			filterChain.doFilter(request, response)
 			return
@@ -61,7 +63,7 @@ abstract class JwtAbstractFilter<USER_ID, JWT_USER : JwtUser<USER_ID>> : OncePer
 
 		val authResult: Authentication
 		try {
-			authResult = authenticationManager!!.authenticate(JwtPreAuthenticationToken(token))
+			authResult = authenticationManager.authenticate(JwtPreAuthenticationToken(token))
 		} catch (failed: InternalAuthenticationServiceException) {
 			logger.error("An internal error occurred while trying to authenticate the user.", failed)
 			unsuccessfulAuthentication(request, response, failed)
@@ -77,9 +79,8 @@ abstract class JwtAbstractFilter<USER_ID, JWT_USER : JwtUser<USER_ID>> : OncePer
 		filterChain.doFilter(request, response)
 	}
 
-	@Throws(SBTextExtractException::class)
+	@Throws(ExtractTextException::class)
 	protected abstract fun extractTokenString(request: HttpServletRequest, response: HttpServletResponse): String
-
 
 	@Throws(IOException::class, ServletException::class)
 	protected fun unsuccessfulAuthentication(request: HttpServletRequest, response: HttpServletResponse,
@@ -101,22 +102,23 @@ abstract class JwtAbstractFilter<USER_ID, JWT_USER : JwtUser<USER_ID>> : OncePer
 	protected fun successfulAuthentication(request: HttpServletRequest, response: HttpServletResponse,
 										   authResult: Authentication) {
 
-		if (logger.isDebugEnabled) {
-			logger.debug("Authentication success. Updating SecurityContextHolder to contain: " + authResult)
-		}
-		val user = authResult.principal as JwtUser<USER_ID>
-
-		request.setAttribute(SSBConstant.REQUEST_ATTR_NAME, user)
-
-		SecurityContextHolder.getContext().authentication = authResult
-
-		//		if(sbJwtSsoHandler != null){
-		//			sbJwtSsoHandler.postProcessing(request, response, authResult);
-		//		}
-
-		//success handler
-		if (successHandler != null) {
-			successHandler!!.onAuthenticationSuccess(request, response, authResult)
-		}
+		TODO()
+//		if (logger.isDebugEnabled) {
+//			logger.debug("Authentication success. Updating SecurityContextHolder to contain: " + authResult)
+//		}
+//		val user = authResult.principal as JwtUser<USER_ID>
+//
+//		request.setAttribute(SSBConstant.REQUEST_ATTR_NAME, user)
+//
+//		SecurityContextHolder.getContext().authentication = authResult
+//
+//		if (jwtSsoHandler != null) {
+//			jwtSsoHandler!!.postProcessing(request, response, authResult)
+//		}
+//
+//		//success handler
+//		if (successHandler != null) {
+//			successHandler!!.onAuthenticationSuccess(request, response, authResult)
+//		}
 	}
 }

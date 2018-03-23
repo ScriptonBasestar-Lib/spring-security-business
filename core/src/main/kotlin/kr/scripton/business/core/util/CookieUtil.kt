@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse
 object CookieUtil {
 
 	@JvmStatic
-	fun toCookie(response: HttpServletResponse, domain: String, serviceName: String, value:String) {
+	fun toCookie(response: HttpServletResponse, domain: String, serviceName: String, value: String) {
 		val cookie = Cookie(serviceName, value)
 		cookie.isHttpOnly = false
 		cookie.secure = false

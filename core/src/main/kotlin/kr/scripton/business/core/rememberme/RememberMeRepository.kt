@@ -4,15 +4,15 @@ import org.springframework.security.web.authentication.rememberme.RememberMeAuth
 
 interface RememberMeRepository {
 
-    fun exists(key: String): Boolean
+	fun exists(key: String): Boolean
 
-    fun storeToken(key: String, token: RememberMeUser)
+	fun storeToken(key: String, token: RememberMeUser)
 
-    @Throws(RememberMeAuthenticationException::class)
-    fun findToken(key: String): RememberMeUser
+	@Throws(RememberMeAuthenticationException::class)
+	fun findToken(key: String): RememberMeUser
 
-    fun removeToken(key: String)
+	fun removeToken(key: String)
 
-    fun dumpAll()
+	fun dumpAll()
 
 }

@@ -8,18 +8,18 @@ import java.util.concurrent.TimeUnit
  * @author archmagece@gmail.com
  * @since 2018-02-08 오후 6:35
  */
-class RedisNonceCheckService(val timeout:Long, val timeunit:TimeUnit) : NonceCheckService {
+class RedisNonceCheckService(val timeout: Long, val timeunit: TimeUnit) : NonceCheckService {
 
 	@Autowired
 	private val redisBooleanTemplate: RedisTemplate<String, Boolean>? = null
 
 	override fun isDuplicate(nonce: String): Boolean {
-		if (redisBooleanTemplate!!.opsForSet().operations.hasKey(nonce)) {
-			redisBooleanTemplate!!.expire(nonce, timeout, timeunit)
+		if (redisBooleanTemplate!!.opsForSet().operations.hasKey(nonce)!!) {
+			redisBooleanTemplate.expire(nonce, timeout, timeunit)
 			return true
 		}
-		redisBooleanTemplate!!.opsForSet().add(nonce, true)
-		redisBooleanTemplate!!.expire(nonce, timeout, timeunit)
+		redisBooleanTemplate.opsForSet().add(nonce, true)
+		redisBooleanTemplate.expire(nonce, timeout, timeunit)
 		return false
 	}
 }

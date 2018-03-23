@@ -42,17 +42,18 @@ object JwtCookieUtil {
 	}
 
 	fun tokenFromCookie(request: HttpServletRequest, serviceName: String, signingKey: String): String? {
-		if (request.cookies == null) {
-			return null
-		}
-//		for (cookie in request.cookies) {
-//			if (cookie.name == serviceName) {
-//				return cookie.value
-//			}
+		TODO()
+//		if (request.cookies == null) {
+//			return null
 //		}
-//		return null
-		return request.cookies
-				.firstOrNull { it.name == serviceName }
-				?.value
+////		for (cookie in request.cookies) {
+////			if (cookie.name == serviceName) {
+////				return cookie.value
+////			}
+////		}
+////		return null
+//		return request.cookies
+//				.firstOrNull { it.name == serviceName }
+//				?.value
 	}
 }

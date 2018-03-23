@@ -28,10 +28,11 @@ class SsoJwtAuthSuccessHandler<JWT_ID, JWT_USER : JwtUser<JWT_ID>> : SsoAuthSucc
 	}
 
 	override fun postProcessing(request: HttpServletRequest, response: HttpServletResponse, authentication: Authentication) {
-		val claim = authentication.principal as JwtUser<JWT_ID>
-		for (domain in findUserAuthorityService.findUserComponent(claim.userUnique)) {
-			CookieUtil.toCookie(response, domain, serviceName, jwtHandler.generateToken(signingKey, claim))
-		}
+		TODO()
+//		val claim = authentication.principal as JwtUser<JWT_ID>
+//		for (domain in findUserAuthorityService.findUserComponent(claim.userUnique)) {
+//			CookieUtil.toCookie(response, domain, serviceName, jwtHandler.generateToken(signingKey, claim))
+//		}
 	}
 
 	override fun support(authentication: Authentication):Boolean {
