@@ -18,12 +18,8 @@ object SecurityMethodUtil {
     }
 
     @JvmStatic
-    fun <PRINCIPAL : BusinessUser<Any>> getPrincipal() : PRINCIPAL? {
+    fun <PRINCIPAL : BusinessUser<Any>> getPrincipal() : PRINCIPAL {
         return getAuthentication().principal as PRINCIPAL
-//        return try {
-//        } catch (e: ClassCastException) {
-//            null
-//        }
     }
 
     @JvmStatic

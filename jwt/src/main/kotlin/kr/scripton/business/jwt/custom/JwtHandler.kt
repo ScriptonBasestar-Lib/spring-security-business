@@ -2,6 +2,9 @@ package kr.scripton.business.jwt.custom
 
 import com.auth0.jwt.interfaces.Claim
 import kr.scripton.business.jwt.auth.JwtUser
+import org.springframework.security.core.Authentication
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
 
 /**
  * @author archmagece

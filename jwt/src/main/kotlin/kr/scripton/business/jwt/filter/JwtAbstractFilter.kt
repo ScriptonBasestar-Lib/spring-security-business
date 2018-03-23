@@ -4,6 +4,7 @@ import kr.scripton.business.core.SSBConstant
 import kr.scripton.business.jwt.auth.JwtAuthenticationManager
 import kr.scripton.business.jwt.auth.JwtPreAuthenticationToken
 import kr.scripton.business.jwt.auth.JwtUser
+import kr.scripton.business.jwt.custom.JwtSsoHandler
 import org.scriptonbasestar.tool.core.exception.compiletime.SBTextExtractException
 import org.springframework.security.authentication.InternalAuthenticationServiceException
 import org.springframework.security.core.Authentication
@@ -32,6 +33,7 @@ abstract class JwtAbstractFilter<USER_ID, JWT_USER : JwtUser<USER_ID>> : OncePer
 	//not null
 	lateinit var signingKey: String
 
+	var sbJwtSsoHandler: JwtSsoHandler? = null
 	var successHandler: AuthenticationSuccessHandler? = null
 	var failureHandler: AuthenticationFailureHandler? = null
 
@@ -110,9 +112,9 @@ abstract class JwtAbstractFilter<USER_ID, JWT_USER : JwtUser<USER_ID>> : OncePer
 
 		SecurityContextHolder.getContext().authentication = authResult
 
-		//		if(sbJwtSsoHandler != null){
-		//			sbJwtSsoHandler.postProcessing(request, response, authResult);
-		//		}
+		if(jwtSsoHandler != null){
+			jwtSsoHandler.postProcessing(request, response, authResult);
+		}
 
 		//success handler
 		if (successHandler != null) {
