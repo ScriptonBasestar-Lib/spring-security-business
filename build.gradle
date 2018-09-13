@@ -8,8 +8,6 @@ buildscript {
 	}
 	dependencies {
 		classpath "org.springframework.boot:spring-boot-gradle-plugin:$spring_boot_version"
-		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-		classpath "org.jetbrains.kotlin:kotlin-allopen:$kotlin_version"
 		classpath "com.google.protobuf:protobuf-gradle-plugin:$protobuf_gradle_plugin_version"
 		classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
 	}
@@ -21,8 +19,6 @@ apply plugin: 'base'
 allprojects {
 	apply plugin: 'java'
 	apply plugin: 'groovy'
-	apply plugin: 'kotlin'
-	apply plugin: 'kotlin-spring'
 	apply plugin: 'eclipse'
 	apply plugin: 'idea'
 
@@ -31,12 +27,6 @@ allprojects {
 	version = project_version
 	sourceCompatibility = java_version
 	targetCompatibility = java_version
-	compileKotlin {
-		kotlinOptions.jvmTarget = java_version
-	}
-	compileTestKotlin {
-		kotlinOptions.jvmTarget = java_version
-	}
 	idea {
 		module {
 			downloadJavadoc = true
@@ -50,19 +40,14 @@ allprojects {
 		}
 	}
 
-	task printProjectName {
-		doLast {
-			println "${project.name}"
-		}
-	}
-	task 'create-dirs' {
-		doLast {
-//			sourceSets*.java.srcDirs*.each { it.mkdirs() }
-			sourceSets*.resources.srcDirs*.each { it.mkdirs() }
-			sourceSets*.kotlin.srcDirs*.each { it.mkdirs() }
-			sourceSets.test.groovy.srcDirs*.each { it.mkdirs() }
-		}
-	}
+//	task 'create-dirs' {
+//		doLast {
+////			sourceSets*.java.srcDirs*.each { it.mkdirs() }
+//			sourceSets*.resources.srcDirs*.each { it.mkdirs() }
+//			sourceSets*.kotlin.srcDirs*.each { it.mkdirs() }
+//			sourceSets.test.groovy.srcDirs*.each { it.mkdirs() }
+//		}
+//	}
 
 	repositories {
 		mavenCentral()
@@ -74,9 +59,6 @@ allprojects {
 	}
 
 	dependencies {
-		compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
-		compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
-
 		compile "org.codehaus.groovy:groovy-all:$groovy_version"
 
 		compileOnly "org.projectlombok:lombok:$lombok_version"
@@ -115,7 +97,7 @@ allprojects {
 	task sourcesJar(type: Jar) {
 		from sourceSets.main.java.srcDirs
 		classifier = 'sources'
-		from sourceSets.main.kotlin
+//		from sourceSets.main.kotlin
 		duplicatesStrategy = "exclude"
 //		def platformSrc = sourceSets.main.kotlin
 //		def commonSrc = project(':common').sourceSets.main.kotlin
