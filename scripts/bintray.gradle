@@ -1,0 +1,66 @@
+//https://github.com/bintray/gradle-bintray-plugin
+
+def credentials = new Bintray(project)
+
+if (credentials.valid()) {
+	apply plugin: 'com.jfrog.bintray'
+	bintray {
+		user = credentials.user
+		key = credentials.key
+		publications = ['mavenJava']
+		dryRun = project.version.endsWith("-SNAPSHOT")
+		publish = false
+		pkg {
+			repo = 'jvm-repo'
+			name = project_name
+			desc = 'Spring Security wrapper for Scripton, Inc.'
+			websiteUrl = 'https://github.com/ScriptonBasestar-Lib/spring-security-business'
+			vcsUrl = 'scm:git@github.com:ScriptonBasestar-Lib/spring-security-business.git'
+			licenses = ["MIT"]
+			userOrg = 'archmagece'
+			publish = false
+
+			githubRepo = 'ScriptonBasestar-Lib/spring-security-business' //Optional Github repository
+			githubReleaseNotesFile = 'README.md' //Optional Github readme file
+
+			version {
+//				gpg {
+//					sign = true
+//					passphrase = credentials.passphrase
+//				}
+//				vcsTag = project.version
+//				name = project.version
+				vcsTag = project_version
+				name = project_version
+				released = new Date()
+			}
+		}
+	}
+}
+
+class Bintray {
+	String user
+	String key
+	String passphrase
+
+	Bintray(project) {
+		this.user = Bintray.value(project, 'BINTRAY_USER', 'bintray.user', 'bintrayUser')
+		this.key = Bintray.value(project, 'BINTRAY_KEY', 'bintray.key', 'bintrayKey')
+		this.passphrase = Bintray.value(project, 'BINTRAY_PASSPHRASE', 'bintray.gpg.passphrase', 'bintrayGpgPassphrase')
+	}
+
+	def valid() {
+		return this.user != null && this.key != null && this.passphrase != null
+	}
+
+	private static def value(Project project, String env, String... property) {
+		def value = System.getenv(env)
+		property.each {
+			if (project.hasProperty(it)) {
+				value = project.getProperty(it)
+				return false
+			}
+		}
+		return value
+	}
+}
