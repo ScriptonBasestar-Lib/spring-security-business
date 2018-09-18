@@ -4,7 +4,7 @@ dependencies {
 	compile "org.springframework.boot:spring-boot-starter-data-redis:$spring_boot_version"
 
 	//기타 필수
-	compile "org.jasypt:jasypt:$jasypt_version"
+	testCompile "org.jasypt:jasypt:$jasypt_version"
 //	compile(
 //			"com.google.guava:guava:$guava_version"
 //			"org.apache.commons:commons-lang3:$commons_lang3_version"

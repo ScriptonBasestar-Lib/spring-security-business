@@ -1,4 +1,4 @@
-package kr.scripton.biz.core.auth
+package kr.scripton.biz.core.registery
 
 /**
  * @author archmagece@gmail.com

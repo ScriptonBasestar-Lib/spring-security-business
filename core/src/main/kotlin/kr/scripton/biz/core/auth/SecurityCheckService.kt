@@ -43,7 +43,7 @@ class SecurityCheckService(private val expressionHandler: MethodSecurityExpressi
 		val checkResult = ExpressionUtils.evaluateAsBoolean(parser!!.parseExpression(securityExpression), evaluationContext)
 
 		if (log.isDebugEnabled) {
-			log.debug("Check result: " + checkResult)
+			log.debug("Check result: $checkResult")
 		}
 
 		return checkResult

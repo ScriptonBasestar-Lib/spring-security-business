@@ -28,15 +28,15 @@ object CookieUtil {
 		if (request.cookies == null) {
 			return null
 		}
-//		for (cookie in request.cookies) {
-//			if (cookie.name == serviceName) {
-//				return cookie.value
-//			}
-//		}
-//		return null
-		return request.cookies
-				.firstOrNull { it.name == serviceName }
-				?.value
+		for (cookie in request.cookies) {
+			if (cookie.name == serviceName) {
+				return cookie.value
+			}
+		}
+		return null
+//		return request.cookies
+//				.firstOrNull { it.name == serviceName }
+//				?.value
 	}
 
 	@JvmStatic
@@ -67,7 +67,8 @@ object CookieUtil {
 
 	@JvmStatic
 	private fun getCookiePath(request: HttpServletRequest): String {
-		val contextPath = request.contextPath
-		return if (contextPath.length > 0) contextPath else "/"
+		request.contextPath.let { contextPath ->
+			return if (contextPath.isNotEmpty()) contextPath else "/"
+		}
 	}
 }

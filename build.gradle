@@ -17,6 +17,7 @@ plugins {
 
 apply plugin: 'base'
 allprojects {
+	apply plugin: 'java'
 	apply plugin: 'groovy'
 	apply plugin: 'kotlin'
 	apply plugin: 'kotlin-spring'

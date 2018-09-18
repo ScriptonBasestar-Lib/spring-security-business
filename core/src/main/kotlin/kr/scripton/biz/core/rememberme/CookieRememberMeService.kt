@@ -61,7 +61,7 @@ class CookieRememberMeService<USER_ID> : RememberMeServices, InitializingBean, L
 	override fun loginSuccess(request: HttpServletRequest, response: HttpServletResponse, successfulAuthentication: Authentication) {
 		val username = successfulAuthentication.name
 
-		logger.debug("Creating new persistent login for user " + username)
+		logger.debug("Creating new persistent login for user $username")
 
 		val rememberMeToken = RememberMeUser(username, generateSeriesData(), generateTokenData(), Date())
 		try {
@@ -73,10 +73,10 @@ class CookieRememberMeService<USER_ID> : RememberMeServices, InitializingBean, L
 	}
 
 	override fun autoLogin(request: HttpServletRequest, response: HttpServletResponse): Authentication? {
-		var rememberMeCookie: String? = extractRememberMeCookie(request) ?: return null
+		val rememberMeCookie: String? = extractRememberMeCookie(request) ?: return null
 		logger.debug("Remember-me cookie detected")
 
-		if (rememberMeCookie!!.length == 0) {
+		if (rememberMeCookie == null ||  rememberMeCookie.isEmpty()) {
 			logger.debug("Cookie was empty")
 			CookieUtil.cancel(request, response, cookieName, cookieDomain)
 			return null
@@ -103,15 +103,13 @@ class CookieRememberMeService<USER_ID> : RememberMeServices, InitializingBean, L
 			logger.debug(e.message)
 		}
 
-
 		CookieUtil.cancel(request, response, cookieName, cookieDomain)
 		return null
 	}
 
 	private fun extractRememberMeCookie(request: HttpServletRequest): String? {
 		val cookies = request.cookies
-
-		if (cookies == null || cookies.size == 0) {
+		if (cookies == null || cookies.isEmpty()) {
 			return null
 		}
 
@@ -135,20 +133,23 @@ class CookieRememberMeService<USER_ID> : RememberMeServices, InitializingBean, L
 	}
 
 	private fun generateSeriesData(): String {
-		val newSeries = ByteArray(seriesLength)
-		random.nextBytes(newSeries)
-		return String(Base64.getEncoder().encode(newSeries))
+		ByteArray(seriesLength).let { newSeries ->
+			random.nextBytes(newSeries)
+			return String(Base64.getEncoder().encode(newSeries))
+		}
 	}
 
 	private fun generateTokenData(): String {
-		val newToken = ByteArray(tokenLength)
-		random.nextBytes(newToken)
-		return String(Base64.getEncoder().encode(newToken))
+		ByteArray(tokenLength).let { newToken ->
+			random.nextBytes(newToken)
+			return String(Base64.getEncoder().encode(newToken))
+		}
 	}
 
-	override fun logout(request: HttpServletRequest, response: HttpServletResponse, authentication: Authentication?) {
-		val username = authentication!!.name
+	override fun logout(request: HttpServletRequest, response: HttpServletResponse, authentication: Authentication) {
+		authentication.name.let { username ->
+			tokenRepository.removeToken(username)
+		}
 		CookieUtil.cancel(request, response, cookieName, cookieDomain)
-		tokenRepository.removeToken(username)
 	}
 }

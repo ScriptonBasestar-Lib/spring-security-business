@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse
  */
 class RequestRedirectFilter : GenericFilterBean() {
 
-	@Throws(IOException::class, ServletException::class)
+//	@Throws(IOException::class, ServletException::class)
 	override fun doFilter(request: ServletRequest, response: ServletResponse, chain: FilterChain) {
 
 		if (request is HttpServletRequest && response is HttpServletResponse) {
